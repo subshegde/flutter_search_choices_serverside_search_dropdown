@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:crm_mobile_app/model/company_list.dart';
-import 'package:crm_mobile_app/utils/config.dart';
-import 'package:crm_mobile_app/utils/helper.dart';
+import 'package:search_choices_app/model/company_list.dart';
+import 'package:search_choices_app/utils/config.dart';
+import 'package:search_choices_app/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:search_choices/search_choices.dart';
@@ -74,7 +74,8 @@ class _SearchChoicesServerSideSearchState
   Future<List<Tuple2<int, String>>> fetchFilterDataFromApi(
       String pattern) async {
     try {
-      String accessToken = await getCrmToken();
+      // get your access token here which you will store in SharedPreferences while doing login
+      String accessToken = await getToken();
       List<Tuple2<int, String>> partyData = [];
 
       List<String> partyType = ['Company', 'Buyer'];
@@ -87,9 +88,9 @@ class _SearchChoicesServerSideSearchState
       } else {
         queryParams['count'] = '30';
       }
-
+// your url here
       Uri url =
-          Uri.parse('${baseUrlCrm}api/masters/api/v1/PartyMaster/').replace(
+          Uri.parse('').replace(
         queryParameters: {
           'party_type__in': query,
           'is_active': 'true',
@@ -140,7 +141,7 @@ class _SearchChoicesServerSideSearchState
     List<DropdownMenuItem<Tuple2<int, String>>> dropdownItems = partyData
         .map<DropdownMenuItem<Tuple2<int, String>>>(
           (item) => DropdownMenuItem<Tuple2<int, String>>(
-            value: item, // Pass the entire Tuple2 object
+            value: item, // Passing the entire Tuple2 object
             child: Text(item.item2),
           ),
         )
